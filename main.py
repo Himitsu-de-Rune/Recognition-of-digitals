@@ -10,9 +10,11 @@ weights_hidden_to_output = np.random.uniform(-0.5, 0.5, (10, 20))
 bias_input_to_hidden = np.zeros((20, 1))
 bias_hidden_to_output = np.zeros((10, 1))
 
-epochs = 3
+epochs = 10
 e_loss = 0
+e_loss_vector = []
 e_correct = 0
+e_correct_vector = []
 learning_rate = 0.01
 
 for epoch in range(epochs):
@@ -46,6 +48,9 @@ for epoch in range(epochs):
 
 		# DONE
 
+	e_loss_vector.append(e_loss[0])
+	e_correct_vector.append(e_correct)
+
 	# print some debug info between epochs
 	print(f"Loss: {round((e_loss[0] / images.shape[0]) * 100, 3)}%")
 	print(f"Accuracy: {round((e_correct / images.shape[0]) * 100, 3)}%")
@@ -54,6 +59,7 @@ for epoch in range(epochs):
 	e_correct = 0
 
 
+count = 0
 
 for image, label in zip(test_images, test_labels):
 	image = np.reshape(image, (-1, 1))
@@ -66,12 +72,27 @@ for image, label in zip(test_images, test_labels):
 	output_raw = bias_hidden_to_output + weights_hidden_to_output @ hidden
 	output = 1 / (1 + np.exp(-output_raw))
 
-	#plt.imshow(image.reshape(28, 28), cmap="Greys")
-	#plt.title(f"NN suggests the CUSTOM number is: {output.argmax()}")
-	#plt.show()
+	if count <= 3:
+		print(f"label: {np.argmax(label)}")
+		plt.imshow(image.reshape(28, 28), cmap="Greys")
+		plt.title(f"NN suggests the CUSTOM number is: {output.argmax()}")
+		plt.show()
 
+	count += 1
 	e_correct += int(np.argmax(output) == np.argmax(label))
 
+fig, ax = plt.subplots()
+x = np.linspace(0, epochs-1, epochs)
+ax.plot(x, e_loss_vector, linewidth=1.0)
+plt.title("loss")
+plt.show()
 
+fig, ax = plt.subplots()
+x = np.linspace(0, epochs-1, epochs)
+ax.plot(x, e_correct_vector, linewidth=1.0)
+plt.title("accuracy")
+plt.show()
+
+print()
 print("Test:")
 print(f"Accuracy: {round(e_correct / test_images.shape[0] * 100, 3)}%")
