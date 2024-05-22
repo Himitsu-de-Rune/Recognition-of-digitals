@@ -10,7 +10,7 @@ weights_hidden_to_output = np.random.uniform(-0.5, 0.5, (10, 20))
 bias_input_to_hidden = np.zeros((20, 1))
 bias_hidden_to_output = np.zeros((10, 1))
 
-epochs = 10
+epochs = 3
 e_loss = 0
 e_correct = 0
 learning_rate = 0.01
