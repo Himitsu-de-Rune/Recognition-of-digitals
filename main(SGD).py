@@ -63,6 +63,7 @@ for epoch in range(epochs):
     train_loss_vector.append((train_loss[0] / train_images.shape[0]) * 100)
     train_correct_vector.append((train_correct / train_images.shape[0]) * 100)
 
+    # Validate the model
     val_loss = 0
     val_correct = 0
     for image, label in zip(val_images, val_labels):
@@ -123,3 +124,4 @@ plt.title("Accuracy")
 plt.legend()
 
 plt.show()
+
